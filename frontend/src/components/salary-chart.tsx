@@ -79,17 +79,17 @@ export function SalaryChart({
       </div>
 
       {/* Chart */}
-      <div className="w-full h-80 bg-white dark:bg-slate-800 rounded-lg p-4">
+      <div className="w-full h-72 sm:h-80 bg-transparent rounded-lg">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+            margin={{ top: 20, right: 30, left: 12, bottom: 50 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis
               dataKey="name"
               tick={{ fill: "#64748b", fontSize: 12 }}
-              angle={-45}
+              angle={-30}
               textAnchor="end"
             />
             <YAxis

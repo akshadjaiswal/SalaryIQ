@@ -32,7 +32,7 @@ export default function Home() {
           {/* Headline */}
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Are You Being Paid{" "}
-            <span className="text-transparent bg-clip-text bg-linear-gradient-to-r from-blue-600 to-purple-600">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
               What You're Worth?
             </span>
           </h2>

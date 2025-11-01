@@ -53,6 +53,7 @@ export const salaryFormSchema = z.object({
   currency: z.string().length(3, "Invalid currency code").default("USD"),
 });
 
+export type SalaryFormInputValues = z.input<typeof salaryFormSchema>;
 export type SalaryFormValues = z.infer<typeof salaryFormSchema>;
 
 // ============================================
@@ -117,15 +118,17 @@ export const CURRENCIES = [
  * Validates and sanitizes form data before submission
  */
 export function sanitizeFormData(
-  data: SalaryFormValues
+  data: SalaryFormInputValues
 ): SalaryFormValues {
-  return {
+  const cleaned = {
     ...data,
     jobTitle: data.jobTitle.trim(),
     location: data.location.trim(),
     industry: data.industry.trim(),
     skills: data.skills.map((s) => s.trim()).filter(Boolean),
   };
+
+  return salaryFormSchema.parse(cleaned);
 }
 
 /**
