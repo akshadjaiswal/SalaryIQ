@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ResultsDashboard } from "@/components/results-dashboard";
@@ -13,33 +13,107 @@ import type { AnalysisResult } from "@/types";
 // RESULTS PAGE
 // ============================================
 
-export default function ResultsPage({ params }: { params: Promise<{ id: string }> }) {
+export default function ResultsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   // Unwrap the params Promise (Next.js 15 requirement)
   const { id } = use(params);
 
   const router = useRouter();
   const storedResult = useSalaryStore(selectAnalysisResult);
+  const setAnalysisResult = useSalaryStore((state) => state.setAnalysisResult);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const redirectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Check if we have a result in store
-    if (storedResult && storedResult.id === id) {
-      setResult(storedResult);
-      setIsLoading(false);
-    } else {
-      // No result found, redirect to home
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
+    let isMounted = true;
+
+    async function hydrateResult() {
+      // Prefer client-side store when available
+      if (storedResult && storedResult.id === id) {
+        if (!isMounted) return;
+        setResult(storedResult);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/results/${id}`, {
+          method: "GET",
+        });
+        const payload = await response.json().catch(() => null);
+
+        if (!response.ok || !payload?.success || !payload?.data) {
+          const message =
+            payload?.error ||
+            (response.status === 404
+              ? "This salary analysis has expired or was not found."
+              : "We couldn't load that salary analysis.");
+
+          if (!isMounted) {
+            return;
+          }
+
+          console.warn(
+            "Shared result missing, showing fallback message:",
+            message
+          );
+          setError(message);
+          setIsLoading(false);
+          if (!redirectTimer.current) {
+            redirectTimer.current = setTimeout(() => {
+              router.push("/");
+            }, 4000);
+          }
+          return;
+        }
+
+        if (!isMounted) {
+          return;
+        }
+
+        setAnalysisResult(payload.data as AnalysisResult);
+        setResult(payload.data as AnalysisResult);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Failed to load shared result:", err);
+        if (!isMounted) return;
+        const friendlyMessage =
+          err instanceof Error && err.message
+            ? err.message
+            : "This salary analysis is no longer available.";
+        // Log the error without rethrowing to avoid unhandled promise rejections
+        console.warn("Displaying result fallback message:", friendlyMessage);
+        setError(friendlyMessage);
+        setIsLoading(false);
+
+        if (!redirectTimer.current) {
+          redirectTimer.current = setTimeout(() => {
+            router.push("/");
+          }, 4000);
+        }
+      }
     }
-  }, [storedResult, id, router]);
+
+    hydrateResult();
+
+    return () => {
+      isMounted = false;
+      if (redirectTimer.current) {
+        clearTimeout(redirectTimer.current);
+      }
+    };
+  }, [storedResult, id, router, setAnalysisResult]);
 
   if (isLoading) {
     return <LoadingScreen message="Loading your results..." />;
   }
 
-  if (!result) {
+  if (error || !result) {
     return (
       <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center">
         <div className="text-center">
@@ -47,7 +121,7 @@ export default function ResultsPage({ params }: { params: Promise<{ id: string }
             Results Not Found
           </h1>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
-            Redirecting you to the homepage...
+            {error || "Redirecting you to the homepage..."}
           </p>
           <Link
             href="/"

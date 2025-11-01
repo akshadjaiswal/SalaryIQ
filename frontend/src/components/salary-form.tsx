@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -36,11 +36,10 @@ export function SalaryForm() {
   const {
     register,
     handleSubmit,
-    control,
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<SalaryFormValues>({
     resolver: zodResolver(salaryFormSchema),
     mode: "onChange",
     defaultValues: {
@@ -52,7 +51,7 @@ export function SalaryForm() {
   const skills = watch("skills") || [];
 
   // Handle form submission
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: SalaryFormValues) => {
     const sanitized = sanitizeFormData(data);
     setFormData(sanitized);
     analyze(sanitized);
@@ -82,7 +81,11 @@ export function SalaryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6"
+      aria-label="Salary analysis form"
+    >
       {/* Job Title */}
       <div>
         <label
@@ -104,7 +107,9 @@ export function SalaryForm() {
           {...register("jobTitle")}
         />
         {errors.jobTitle && (
-          <p className="mt-1 text-sm text-red-500">{errors.jobTitle.message}</p>
+          <p className="mt-1 text-sm text-red-500" role="alert">
+            {errors.jobTitle.message}
+          </p>
         )}
       </div>
 
@@ -122,6 +127,7 @@ export function SalaryForm() {
           min="0"
           max="50"
           placeholder="e.g., 5"
+          inputMode="numeric"
           className={cn(
             "w-full px-4 py-3 rounded-lg border bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500",
             errors.yearsExperience
@@ -131,7 +137,7 @@ export function SalaryForm() {
           {...register("yearsExperience", { valueAsNumber: true })}
         />
         {errors.yearsExperience && (
-          <p className="mt-1 text-sm text-red-500">
+          <p className="mt-1 text-sm text-red-500" role="alert">
             {errors.yearsExperience.message}
           </p>
         )}
@@ -158,7 +164,9 @@ export function SalaryForm() {
           {...register("location")}
         />
         {errors.location && (
-          <p className="mt-1 text-sm text-red-500">{errors.location.message}</p>
+          <p className="mt-1 text-sm text-red-500" role="alert">
+            {errors.location.message}
+          </p>
         )}
       </div>
 
@@ -188,7 +196,9 @@ export function SalaryForm() {
           ))}
         </select>
         {errors.industry && (
-          <p className="mt-1 text-sm text-red-500">{errors.industry.message}</p>
+          <p className="mt-1 text-sm text-red-500" role="alert">
+            {errors.industry.message}
+          </p>
         )}
       </div>
 
@@ -202,7 +212,7 @@ export function SalaryForm() {
         </label>
 
         {/* Skill input */}
-        <div className="flex gap-2 mb-3">
+        <div className="flex flex-col gap-2 mb-3 sm:flex-row">
           <input
             id="skillInput"
             type="text"
@@ -221,6 +231,7 @@ export function SalaryForm() {
             type="button"
             onClick={addSkill}
             className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+            aria-label="Add skill"
           >
             <Plus className="h-5 w-5" />
           </button>
@@ -239,6 +250,7 @@ export function SalaryForm() {
                 onClick={() => addPopularSkill(skill)}
                 disabled={skills.includes(skill)}
                 className="px-3 py-1 text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-pressed={skills.includes(skill)}
               >
                 {skill}
               </button>
@@ -259,6 +271,7 @@ export function SalaryForm() {
                   type="button"
                   onClick={() => removeSkill(skill)}
                   className="hover:text-blue-900 dark:hover:text-blue-100"
+                  aria-label={`Remove skill ${skill}`}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -268,13 +281,15 @@ export function SalaryForm() {
         )}
 
         {errors.skills && (
-          <p className="mt-1 text-sm text-red-500">{errors.skills.message}</p>
+          <p className="mt-1 text-sm text-red-500" role="alert">
+            {errors.skills.message}
+          </p>
         )}
       </div>
 
       {/* Current Salary (Optional) */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <div className="sm:col-span-2">
           <label
             htmlFor="currentSalary"
             className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
@@ -286,6 +301,7 @@ export function SalaryForm() {
             type="number"
             min="0"
             placeholder="e.g., 85000"
+            inputMode="numeric"
             className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             {...register("currentSalary", { valueAsNumber: true })}
           />

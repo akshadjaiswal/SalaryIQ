@@ -62,19 +62,21 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
     <div className="max-w-5xl mx-auto space-y-8">
       {/* Main Verdict Card */}
       <div
-        className={`${config.bg} ${config.border} border-2 rounded-2xl p-8 text-center`}
+        className={`${config.bg} ${config.border} border-2 rounded-2xl p-6 sm:p-8 text-center`}
+        role="status"
+        aria-live="polite"
       >
         <div className="flex justify-center mb-4">
           <Icon className={`h-16 w-16 ${config.text}`} />
         </div>
 
         <h1
-          className={`text-4xl md:text-5xl font-black mb-4 ${config.text}`}
+          className={`text-3xl sm:text-4xl md:text-5xl font-black mb-4 ${config.text}`}
         >
           {config.emoji} You're {config.title}
         </h1>
 
-        <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+        <p className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2">
           {formatPercentage(Math.abs(difference))}
         </p>
 
@@ -110,13 +112,17 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
       </div>
 
       {/* Salary Chart */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg">
-        <SalaryChart
-          salaryRange={salaryRange}
-          currentSalary={result.currentSalary}
-          currency={currency}
-          verdict={verdict}
-        />
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-6 shadow-lg">
+        <div className="overflow-x-auto">
+          <div className="min-w-[320px]">
+            <SalaryChart
+              salaryRange={salaryRange}
+              currentSalary={result.currentSalary}
+              currency={currency}
+              verdict={verdict}
+            />
+          </div>
+        </div>
       </div>
 
       {/* AI Reasoning */}
