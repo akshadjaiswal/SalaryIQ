@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeSalaryWithRetry } from "@/lib/gemini";
 import { getCachedAnalysis, cacheAnalysis } from "@/lib/supabase";
 import { generateCacheKey, salaryFormSchema } from "@/lib/validations";
-import type { AnalysisResponse, AnalysisResult, SalaryFormData } from "@/types";
+import { checkRateLimit, recordRequest } from "@/lib/rate-limiter";
+import type { AnalysisResponse, AnalysisResult, SalaryFormData, Verdict } from "@/types";
 import { randomUUID } from "crypto";
 
 // ============================================
@@ -45,8 +46,29 @@ export async function POST(request: NextRequest) {
 
     console.log("❌ Cache miss, calling Gemini API");
 
+    // Check rate limit before calling API
+    const rateLimitCheck = checkRateLimit();
+    if (!rateLimitCheck.allowed) {
+      console.error("🚫 Rate limit exceeded");
+      return NextResponse.json(
+        {
+          success: false,
+          error: rateLimitCheck.error,
+        } as AnalysisResponse,
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitCheck.retryAfter?.toString() || '60',
+          },
+        }
+      );
+    }
+
     // Call Gemini AI for analysis
     const aiResponse = await analyzeSalaryWithRetry(validatedData);
+
+    // Record successful API request for rate limiting
+    recordRequest();
 
     // Calculate difference percentage if current salary provided
     let differencePercentage = aiResponse.difference_percentage;
