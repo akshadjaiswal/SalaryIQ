@@ -8,6 +8,7 @@ import { X, Plus, Sparkles } from "lucide-react";
 import {
   salaryFormSchema,
   type SalaryFormValues,
+  type SalaryFormInputValues,
   POPULAR_INDUSTRIES,
   POPULAR_SKILLS,
   CURRENCIES,
@@ -39,7 +40,7 @@ export function SalaryForm() {
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<SalaryFormValues>({
+  } = useForm<SalaryFormInputValues>({
     resolver: zodResolver(salaryFormSchema),
     mode: "onChange",
     defaultValues: {
@@ -51,7 +52,7 @@ export function SalaryForm() {
   const skills = watch("skills") || [];
 
   // Handle form submission
-  const onSubmit = (data: SalaryFormValues) => {
+  const onSubmit = (data: SalaryFormInputValues) => {
     const sanitized = sanitizeFormData(data);
     setFormData(sanitized);
     analyze(sanitized);
