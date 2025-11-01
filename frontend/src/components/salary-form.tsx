@@ -40,7 +40,7 @@ export function SalaryForm() {
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<SalaryFormValues>({
+  } = useForm({
     resolver: zodResolver(salaryFormSchema),
     mode: "onChange",
     defaultValues: {
@@ -52,7 +52,7 @@ export function SalaryForm() {
   const skills = watch("skills") || [];
 
   // Handle form submission
-  const onSubmit = (data: SalaryFormValues) => {
+  const onSubmit = (data: any) => {
     const sanitized = sanitizeFormData(data);
     setFormData(sanitized);
     analyze(sanitized);
@@ -316,7 +316,7 @@ export function SalaryForm() {
       <button
         type="submit"
         disabled={!isValid || isAnalyzing}
-        className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed text-white rounded-lg font-bold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+        className="w-full px-6 py-4 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed text-white rounded-lg font-bold text-lg transition-all duration-200 flex items-center justify-center gap-2"
       >
         {isAnalyzing ? (
           <>

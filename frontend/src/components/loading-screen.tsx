@@ -47,7 +47,7 @@ export function LoadingScreen({ message }: LoadingScreenProps) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-linear-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="max-w-md w-full px-6 text-center">
         {/* Animated spinner */}
         <div className="mb-8 flex justify-center">
@@ -72,7 +72,7 @@ export function LoadingScreen({ message }: LoadingScreenProps) {
         {/* Progress bar */}
         <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
           <div
-            className="h-full bg-gradient-to-br from-blue-500 to-purple-600 transition-all duration-300 ease-out"
+            className="h-full bg-linear-gradient-to-br from-blue-500 to-purple-600 transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>

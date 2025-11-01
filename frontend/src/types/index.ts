@@ -13,7 +13,7 @@ export interface SalaryFormData {
   industry: string;
   skills: string[];
   currentSalary?: number;
-  currency?: string;
+  currency: string; // Always has a value (defaults to "USD")
 }
 
 export interface SalaryRange {

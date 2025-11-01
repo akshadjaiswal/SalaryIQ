@@ -57,12 +57,41 @@ export async function POST(request: NextRequest) {
         100;
     }
 
-    // Determine verdict based on difference
-    let verdict = aiResponse.verdict;
-    if (!verdict) {
-      if (differencePercentage < -10) {
+    // Determine verdict based on difference with realistic thresholds
+    let verdict: Verdict;
+
+    if (validatedData.currentSalary) {
+      const salary = validatedData.currentSalary;
+      const median = aiResponse.median_salary;
+
+      // Calculate realistic percentiles from the range
+      const range = aiResponse.max_salary - aiResponse.min_salary;
+      const p25 = aiResponse.min_salary + (range * 0.25);
+      const p75 = aiResponse.min_salary + (range * 0.75);
+
+      // Check if salary is within the reasonable market range
+      // If within min-max range, consider position relative to median
+      if (salary >= aiResponse.min_salary && salary <= aiResponse.max_salary) {
+        // Within range - check how far from median
+        const percentFromMedian = Math.abs((salary - median) / median) * 100;
+
+        if (percentFromMedian <= 25) {
+          verdict = "fair";  // Within ±25% of median is fair
+        } else if (salary < median) {
+          verdict = "underpaid";  // More than 25% below median
+        } else {
+          verdict = "overpaid";  // More than 25% above median
+        }
+      } else if (salary < aiResponse.min_salary) {
+        verdict = "underpaid";  // Below minimum
+      } else {
+        verdict = "overpaid";  // Above maximum
+      }
+    } else {
+      // Fallback to percentage-based logic if no current salary
+      if (differencePercentage < -20) {
         verdict = "underpaid";
-      } else if (differencePercentage > 10) {
+      } else if (differencePercentage > 20) {
         verdict = "overpaid";
       } else {
         verdict = "fair";

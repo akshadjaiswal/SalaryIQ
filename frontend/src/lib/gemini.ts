@@ -76,6 +76,14 @@ Provide a realistic salary analysis based on current market conditions in ${curr
 - Keep reasoning concise (2-3 sentences)
 - Market insights should mention ${currentYear} trends
 
+**VERDICT DETERMINATION:**
+The verdict field is informational only - the final verdict will be calculated based on percentile ranges:
+- "underpaid": Salary is below the 25th percentile (p25)
+- "fair": Salary is between 25th-75th percentile (comfortable middle range)
+- "overpaid": Salary is above the 75th percentile (p75)
+
+Ensure percentile_25 and percentile_75 are realistic values within your min-max range.
+
 Return ONLY the JSON object, no additional text or markdown formatting.`;
 }
 

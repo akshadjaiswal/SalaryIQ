@@ -123,7 +123,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
       {reasoning && (
         <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-6">
           <div className="flex items-start gap-3">
-            <Brain className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+            <Brain className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1 shrink-0" />
             <div>
               <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-50 mb-2">
                 AI Analysis
@@ -152,7 +152,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
                 key={index}
                 className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg"
               >
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
                   <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                     {index + 1}
                   </span>
@@ -167,7 +167,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
       )}
 
       {/* Share Section */}
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 text-center">
+      <div className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 text-center">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
           Share Your Results
         </h3>

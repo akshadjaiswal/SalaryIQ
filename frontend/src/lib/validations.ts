@@ -15,10 +15,7 @@ export const salaryFormSchema = z.object({
     ),
 
   yearsExperience: z
-    .number({
-      required_error: "Years of experience is required",
-      invalid_type_error: "Must be a number",
-    })
+    .number()
     .int("Must be a whole number")
     .min(0, "Cannot be negative")
     .max(50, "Must be 50 years or less"),

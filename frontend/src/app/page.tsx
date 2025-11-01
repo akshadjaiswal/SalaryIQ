@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-linear-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Hero Section */}
       <section className="container mx-auto px-4 pt-20 pb-12">
         <div className="max-w-4xl mx-auto text-center mb-16">
@@ -32,7 +32,7 @@ export default function Home() {
           {/* Headline */}
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Are You Being Paid{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+            <span className="text-transparent bg-clip-text bg-linear-gradient-to-r from-blue-600 to-purple-600">
               What You're Worth?
             </span>
           </h2>
@@ -144,7 +144,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-2 gap-8">
               <div className="flex gap-4">
-                <Zap className="h-6 w-6 text-yellow-400 flex-shrink-0 mt-1" />
+                <Zap className="h-6 w-6 text-yellow-400 shrink-0 mt-1" />
                 <div>
                   <h4 className="text-xl font-bold mb-2">Lightning Fast</h4>
                   <p className="text-slate-300">
@@ -154,7 +154,7 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <Globe className="h-6 w-6 text-blue-400 flex-shrink-0 mt-1" />
+                <Globe className="h-6 w-6 text-blue-400 shrink-0 mt-1" />
                 <div>
                   <h4 className="text-xl font-bold mb-2">Global Coverage</h4>
                   <p className="text-slate-300">
@@ -164,7 +164,7 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <Shield className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
+                <Shield className="h-6 w-6 text-green-400 shrink-0 mt-1" />
                 <div>
                   <h4 className="text-xl font-bold mb-2">100% Anonymous</h4>
                   <p className="text-slate-300">
@@ -174,7 +174,7 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <Sparkles className="h-6 w-6 text-purple-400 flex-shrink-0 mt-1" />
+                <Sparkles className="h-6 w-6 text-purple-400 shrink-0 mt-1" />
                 <div>
                   <h4 className="text-xl font-bold mb-2">AI-Powered</h4>
                   <p className="text-slate-300">
