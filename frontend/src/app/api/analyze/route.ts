@@ -142,6 +142,49 @@ export async function POST(request: NextRequest) {
       marketInsights: aiResponse.market_insights,
       currency: validatedData.currency || "USD",
       createdAt: new Date(),
+
+      // Transform analytics data from snake_case to camelCase
+      marketPosition: aiResponse.market_position ? {
+        percentile: aiResponse.market_position.percentile,
+        nationalAverage: aiResponse.market_position.national_average,
+        cityPremiumPercentage: aiResponse.market_position.city_premium_percentage,
+      } : undefined,
+
+      earningProjection: aiResponse.earning_projection ? {
+        currentYear: aiResponse.earning_projection.current_year,
+        year3: aiResponse.earning_projection.year_3,
+        year5: aiResponse.earning_projection.year_5,
+        averageAnnualGrowthRate: aiResponse.earning_projection.average_annual_growth_rate,
+      } : undefined,
+
+      topSkillImpacts: aiResponse.top_skill_impacts?.map(skill => ({
+        skill: skill.skill,
+        salaryIncrease: skill.salary_increase,
+        percentageIncrease: skill.percentage_increase,
+        demand: skill.demand,
+      })),
+
+      locationComparisons: aiResponse.location_comparisons?.map(loc => ({
+        city: loc.city,
+        averageSalary: loc.average_salary,
+        percentageDifference: loc.percentage_difference,
+      })),
+
+      industryBenchmarks: aiResponse.industry_benchmarks?.map(ind => ({
+        industry: ind.industry,
+        averageSalary: ind.average_salary,
+        percentageDifference: ind.percentage_difference,
+        growthTrend: ind.growth_trend,
+      })),
+
+      timeToTarget: aiResponse.time_to_target ? {
+        targetSalary: aiResponse.time_to_target.target_salary,
+        yearsWithAvgGrowth: aiResponse.time_to_target.years_with_avg_growth,
+        yearsWithAggressiveGrowth: aiResponse.time_to_target.years_with_aggressive_growth,
+        yearsWithSkillUpgrades: aiResponse.time_to_target.years_with_skill_upgrades,
+        avgGrowthRate: aiResponse.time_to_target.avg_growth_rate,
+        aggressiveGrowthRate: aiResponse.time_to_target.aggressive_growth_rate,
+      } : undefined,
     };
 
     // Cache the result

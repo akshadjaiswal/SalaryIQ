@@ -24,6 +24,53 @@ export interface SalaryRange {
   percentile75?: number;
 }
 
+// ============================================
+// ANALYTICS TYPES (New Feature)
+// ============================================
+
+export interface MarketPosition {
+  percentile: number; // 0-100, where user ranks
+  nationalAverage: number;
+  cityPremiumPercentage: number; // how much higher/lower than national
+}
+
+export interface EarningProjection {
+  currentYear: number;
+  year3: number;
+  year5: number;
+  averageAnnualGrowthRate: number; // percentage
+}
+
+export interface SkillImpact {
+  skill: string;
+  salaryIncrease: number; // absolute amount
+  percentageIncrease: number; // percentage
+  demand: "high" | "medium" | "low";
+}
+
+export interface LocationComparison {
+  city: string;
+  averageSalary: number;
+  percentageDifference: number; // vs user's current location
+  costOfLivingAdjusted?: number;
+}
+
+export interface IndustryBenchmark {
+  industry: string;
+  averageSalary: number;
+  percentageDifference: number; // vs user's current industry
+  growthTrend: "rising" | "stable" | "declining";
+}
+
+export interface TimeToTarget {
+  targetSalary: number; // typically the median
+  yearsWithAvgGrowth: number;
+  yearsWithAggressiveGrowth: number;
+  yearsWithSkillUpgrades: number;
+  avgGrowthRate: number;
+  aggressiveGrowthRate: number;
+}
+
 export interface AnalysisResult {
   id: string;
   verdict: Verdict;
@@ -37,6 +84,14 @@ export interface AnalysisResult {
   marketInsights?: string;
   currency: string;
   createdAt: Date;
+
+  // New Analytics Fields
+  marketPosition?: MarketPosition;
+  earningProjection?: EarningProjection;
+  topSkillImpacts?: SkillImpact[]; // top 3-5 skills
+  locationComparisons?: LocationComparison[]; // top 3-4 cities
+  industryBenchmarks?: IndustryBenchmark[]; // top 3-4 industries
+  timeToTarget?: TimeToTarget;
 }
 
 export interface AnalysisRequest {
@@ -96,6 +151,44 @@ export interface GeminiAnalysisResponse {
   recommendations: string[];
   reasoning?: string;
   market_insights?: string;
+
+  // New Analytics Fields
+  market_position?: {
+    percentile: number;
+    national_average: number;
+    city_premium_percentage: number;
+  };
+  earning_projection?: {
+    current_year: number;
+    year_3: number;
+    year_5: number;
+    average_annual_growth_rate: number;
+  };
+  top_skill_impacts?: Array<{
+    skill: string;
+    salary_increase: number;
+    percentage_increase: number;
+    demand: "high" | "medium" | "low";
+  }>;
+  location_comparisons?: Array<{
+    city: string;
+    average_salary: number;
+    percentage_difference: number;
+  }>;
+  industry_benchmarks?: Array<{
+    industry: string;
+    average_salary: number;
+    percentage_difference: number;
+    growth_trend: "rising" | "stable" | "declining";
+  }>;
+  time_to_target?: {
+    target_salary: number;
+    years_with_avg_growth: number;
+    years_with_aggressive_growth: number;
+    years_with_skill_upgrades: number;
+    avg_growth_rate: number;
+    aggressive_growth_rate: number;
+  };
 }
 
 // ============================================

@@ -11,7 +11,14 @@ import {
   Lightbulb,
   Target,
   Brain,
+  BarChart3,
 } from "lucide-react";
+import { MarketPositionCard } from "./analytics/market-position-card";
+import { EarningProjectionCard } from "./analytics/earning-projection-card";
+import { SkillImpactCard } from "./analytics/skill-impact-card";
+import { LocationComparisonCard } from "./analytics/location-comparison-card";
+import { IndustryBenchmarkCard } from "./analytics/industry-benchmark-card";
+import { TimeToTargetCard } from "./analytics/time-to-target-card";
 
 // ============================================
 // RESULTS DASHBOARD COMPONENT
@@ -170,6 +177,61 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Advanced Analytics Section */}
+      {(result.marketPosition ||
+        result.earningProjection ||
+        result.topSkillImpacts ||
+        result.locationComparisons ||
+        result.industryBenchmarks ||
+        result.timeToTarget) && (
+        <>
+          {/* Section Header */}
+          <div className="text-center pt-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-terra-50 to-sage-50 dark:from-terra-900/20 dark:to-sage-900/20 rounded-full border border-terra-200 dark:border-terra-800 mb-4">
+              <BarChart3 className="h-5 w-5 text-terra-600 dark:text-terra-400" />
+              <span className="font-semibold text-terra-900 dark:text-terra-100">Advanced Analytics</span>
+            </div>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-slate-50 mb-2">
+              Your Career Insights
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Comprehensive analysis to help you make informed career decisions
+            </p>
+          </div>
+
+          {/* Analytics Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {result.marketPosition && (
+              <MarketPositionCard data={result.marketPosition} currency={currency} />
+            )}
+
+            {result.earningProjection && (
+              <EarningProjectionCard data={result.earningProjection} currency={currency} />
+            )}
+
+            {result.topSkillImpacts && result.topSkillImpacts.length > 0 && (
+              <SkillImpactCard data={result.topSkillImpacts} currency={currency} />
+            )}
+
+            {result.locationComparisons && result.locationComparisons.length > 0 && (
+              <LocationComparisonCard
+                data={result.locationComparisons}
+                currency={currency}
+                userLocation={result.marketPosition ? "Your Location" : "Current"}
+              />
+            )}
+
+            {result.industryBenchmarks && result.industryBenchmarks.length > 0 && (
+              <IndustryBenchmarkCard data={result.industryBenchmarks} currency={currency} />
+            )}
+
+            {result.timeToTarget && (
+              <TimeToTargetCard data={result.timeToTarget} currency={currency} />
+            )}
+          </div>
+        </>
       )}
 
       {/* Share Section */}

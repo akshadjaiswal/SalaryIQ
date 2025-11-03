@@ -114,12 +114,13 @@ ${data.currency === "INR" || isIndianLocation
 - Max salary should be 2-2.5x the min_salary for realistic range`}
 
 **TASK:**
-Provide a realistic salary analysis based on current market conditions in ${currentYear}. Consider:
+Provide a comprehensive salary analysis based on current market conditions in ${currentYear}. Consider:
 1. Geographic cost of living and local market rates
 2. Industry-specific compensation trends
 3. **CRITICAL**: Experience level (${seniorityLevel} for ${data.yearsExperience} YOE) - this is the PRIMARY factor
 4. In-demand skills premium
 5. Company size and type variations
+6. **NEW**: Provide advanced analytics including market position, projections, skill impacts, location comparisons, industry benchmarks, and career timeline
 
 **OUTPUT FORMAT (JSON only, no markdown):**
 {
@@ -137,7 +138,58 @@ Provide a realistic salary analysis based on current market conditions in ${curr
     "Specific actionable recommendation 3"
   ],
   "reasoning": "Brief explanation emphasizing the ${seniorityLevel} level and key salary factors",
-  "market_insights": "Current market trends affecting ${seniorityLevel} professionals in this role"
+  "market_insights": "Current market trends affecting ${seniorityLevel} professionals in this role",
+
+  "market_position": {
+    "percentile": <number 0-100, where user ranks compared to similar professionals>,
+    "national_average": <number, national/regional average salary for this role>,
+    "city_premium_percentage": <number, how much higher/lower than national average, can be negative>
+  },
+
+  "earning_projection": {
+    "current_year": <number, their current or estimated salary>,
+    "year_3": <number, projected salary in 3 years with average growth>,
+    "year_5": <number, projected salary in 5 years with average growth>,
+    "average_annual_growth_rate": <number, typical annual growth rate percentage for this role>
+  },
+
+  "top_skill_impacts": [
+    {
+      "skill": "<high-value skill name not currently listed>",
+      "salary_increase": <number, absolute salary increase potential>,
+      "percentage_increase": <number, percentage increase potential>,
+      "demand": "<high|medium|low>"
+    }
+    // Include 3-5 skills that would significantly boost salary
+  ],
+
+  "location_comparisons": [
+    {
+      "city": "<city name>",
+      "average_salary": <number, average salary in that city>,
+      "percentage_difference": <number, vs user's current location, can be negative>
+    }
+    // Include 3-4 comparable or higher-paying cities
+  ],
+
+  "industry_benchmarks": [
+    {
+      "industry": "<industry name>",
+      "average_salary": <number, average salary in that industry for this role>,
+      "percentage_difference": <number, vs user's current industry, can be negative>,
+      "growth_trend": "<rising|stable|declining>"
+    }
+    // Include 3-4 industries (including theirs and alternatives)
+  ],
+
+  "time_to_target": {
+    "target_salary": <number, typically the median_salary>,
+    "years_with_avg_growth": <number, years to reach target with average growth>,
+    "years_with_aggressive_growth": <number, years with job changes and negotiations>,
+    "years_with_skill_upgrades": <number, years if they learn high-value skills>,
+    "avg_growth_rate": <number, average annual growth percentage>,
+    "aggressive_growth_rate": <number, aggressive growth percentage (15-25%)>
+  }
 }
 
 **FINAL CHECKLIST BEFORE RESPONDING:**
@@ -146,6 +198,10 @@ Provide a realistic salary analysis based on current market conditions in ${curr
 ✓ Does median fall appropriately within the range (not too close to min)?
 ✓ Do percentile_25 and percentile_75 make sense within min-max range?
 ✓ Are recommendations specific to ${seniorityLevel} career advancement?
+✓ Are all analytics fields populated (market_position, earning_projection, top_skill_impacts, location_comparisons, industry_benchmarks, time_to_target)?
+✓ Do skill impacts represent skills NOT already in their profile?
+✓ Are location comparisons realistic for similar roles?
+✓ Are earning projections based on realistic growth rates for ${seniorityLevel}?
 
 Return ONLY the JSON object, no additional text or markdown formatting.`;
 }
@@ -178,7 +234,7 @@ async function callGeminiAPI(
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 4096, // Increased for analytics data
         },
         safetySettings: [
           {
