@@ -1,6 +1,6 @@
 # SalaryIQ - AI-Powered Salary Analysis Platform
 
-> **Purpose**: This file provides comprehensive context for AI assistants to quickly understand the SalaryIQ codebase without full scanning. Last updated: 2025-01-03
+> **Purpose**: This file provides comprehensive context for AI assistants to quickly understand the SalaryIQ codebase without full scanning. Last updated: 2025-11-03
 
 ---
 
@@ -10,11 +10,13 @@
 
 ### Core Features
 - AI-powered salary analysis using Google Gemini
+- **NEW**: Advanced analytics (market position, earning projections, skill impacts, location/industry comparisons, career timeline)
 - Real-time market data comparison
 - Shareable results with dynamic OG images
 - Multi-currency support (USD, EUR, GBP, INR, CAD, AUD)
 - Smart caching to reduce API costs
 - Rate limiting for API protection
+- Stage-based loading screen with progress indicators
 
 ---
 
@@ -63,10 +65,17 @@ SalaryIQ/
 │   │   │       └── og/route.tsx             # OG image generator
 │   │   ├── components/         # React components
 │   │   │   ├── salary-form.tsx          # Input form
-│   │   │   ├── results-dashboard.tsx    # Results display
+│   │   │   ├── results-dashboard.tsx    # Results display with analytics
 │   │   │   ├── salary-chart.tsx         # Recharts visualization
 │   │   │   ├── share-buttons.tsx        # Social sharing
-│   │   │   └── loading-screen.tsx       # Loading state
+│   │   │   ├── loading-screen.tsx       # 4-stage loading with progress
+│   │   │   └── analytics/              # NEW: Analytics card components
+│   │   │       ├── market-position-card.tsx       # Percentile ranking
+│   │   │       ├── earning-projection-card.tsx    # 5-year projections
+│   │   │       ├── skill-impact-card.tsx          # Skill salary impacts
+│   │   │       ├── location-comparison-card.tsx   # City comparisons
+│   │   │       ├── industry-benchmark-card.tsx    # Industry insights
+│   │   │       └── time-to-target-card.tsx        # Career timeline
 │   │   ├── lib/                # Core utilities
 │   │   │   ├── validations.ts   # Zod schemas & helpers
 │   │   │   ├── gemini.ts        # AI integration
@@ -166,9 +175,16 @@ SalaryIQ/
 | File | Purpose |
 |------|---------|
 | `components/salary-form.tsx` | Multi-step form with autocomplete |
-| `components/results-dashboard.tsx` | Main results display with verdict card |
+| `components/results-dashboard.tsx` | Main results display with verdict card + analytics |
 | `components/salary-chart.tsx` | Recharts bar chart with percentiles |
 | `components/share-buttons.tsx` | Twitter/LinkedIn/Copy sharing |
+| `components/loading-screen.tsx` | 4-stage loading (Analyzing → Market Data → AI → Finalize) |
+| `components/analytics/market-position-card.tsx` | Shows percentile rank and market position |
+| `components/analytics/earning-projection-card.tsx` | 5-year salary projections with growth rates |
+| `components/analytics/skill-impact-card.tsx` | Top 3-5 skills that boost salary |
+| `components/analytics/location-comparison-card.tsx` | City salary comparisons |
+| `components/analytics/industry-benchmark-card.tsx` | Industry insights with growth trends |
+| `components/analytics/time-to-target-card.tsx` | Timeline to reach target salary |
 
 ### Sharing & SEO
 | File | Purpose |
@@ -255,31 +271,60 @@ ELSE (no current salary):
 
 ## 🎨 Design System
 
-### Color Palette (Updated 2025-01-03)
+### Color Palette (Updated 2025-11-03)
 
-**Primary - Terracotta**
-- `#B85042` - Main brand color (buttons, accents, median highlights)
-- `#a5463a` - Hover state
-- `#fbe8e5` - Light backgrounds
-- `#5c2620` - Dark accents
+**IMPORTANT**: All colors are defined as CSS variables in `globals.css` and available as Tailwind utility classes. Never use hardcoded hex values in components - always use the utility classes!
 
-**Secondary - Sage Green**
-- `#A7BEAE` - Secondary accent, "fair" verdict
-- `#8fa69a` - Darker shade
-- `#e8ebe9` - Light backgrounds
-- `#4d5f56` - Text/dark accents
+**Primary - Terracotta** (CSS class prefix: `terra-`)
+- `terra-50`: `#fbe8e5` - Lightest backgrounds
+- `terra-100`: `#f7d1cc` - Light backgrounds
+- `terra-500`: `#B85042` - Main brand color (buttons, accents, median highlights)
+- `terra-600`: `#a5463a` - Hover state
+- `terra-900`: `#5c2620` - Dark accents
+- Usage: `bg-terra-500`, `text-terra-600`, `border-terra-200`, etc.
 
-**Neutral - Cream**
-- `#E7E8D1` - Main background color
-- `#c1c39f` - Borders and dividers
-- `#d4d6b8` - Subtle backgrounds
-- `#2d2d2d` - Primary text
-- `#6b6b6b` - Secondary text
+**Secondary - Sage Green** (CSS class prefix: `sage-`)
+- `sage-50`: `#e8ebe9` - Lightest backgrounds
+- `sage-100`: `#d1d6d3` - Light backgrounds
+- `sage-500`: `#A7BEAE` - Secondary accent, "fair" verdict
+- `sage-600`: `#8fa69a` - Darker shade
+- `sage-900`: `#4d5f56` - Text/dark accents
+- Usage: `bg-sage-50`, `text-sage-600`, `border-sage-200`, etc.
+
+**Neutral - Cream** (CSS class prefix: `cream-`)
+- `cream-50`: `#faf8f0` - Lightest backgrounds
+- `cream-100`: `#E7E8D1` - Main background color
+- `cream-200`: `#d4d6b8` - Subtle backgrounds
+- `cream-300`: `#c1c39f` - Borders and dividers
+- Usage: `bg-cream-100`, `border-cream-300`, etc.
+
+**Standard Tailwind Colors**
+- **Text**: `text-foreground` (#2d2d2d), `text-muted-foreground` (#6b6b6b)
+- **Backgrounds**: `bg-white`, `bg-slate-50`, `bg-slate-100`, etc.
+- **Semantic**: `text-red-600`, `text-green-600`, `text-amber-600` for verdicts
 
 **Semantic Colors (Verdicts)**
-- **Underpaid**: Red (`#991b1b`, `#fee2e2`)
-- **Fair**: Sage Green (`#A7BEAE`, `#e8ebe9`)
-- **Overpaid**: Amber (`#b45309`, `#fef3c7`)
+- **Underpaid**: Red (`text-red-600`, `bg-red-50`)
+- **Fair**: Sage Green (`text-sage-600`, `bg-sage-50`)
+- **Overpaid**: Amber (`text-amber-600`, `bg-amber-50`)
+
+### CSS Variable System (Tailwind CSS 4)
+Defined in `app/globals.css` using `@theme inline`:
+```css
+@theme inline {
+  --color-terra-50: var(--terra-50);
+  --color-terra-100: var(--terra-100);
+  --color-terra-500: var(--terra-500);
+  --color-terra-600: var(--terra-600);
+  --color-terra-900: var(--terra-900);
+  // ... same for sage and cream
+}
+```
+
+**Important Notes**:
+- Recharts requires actual hex values (use constants like `TERRA_500 = "#B85042"`)
+- All other components must use utility classes: `bg-terra-500` NOT `bg-[#B85042]`
+- Dark mode variants: `dark:bg-terra-900/30`, `dark:text-sage-400`
 
 ### Typography
 - **Font**: Geist Sans (primary), Geist Mono (code)
@@ -377,6 +422,74 @@ CREATE INDEX idx_created_at ON analysis_cache(created_at);
 ---
 
 ## 🔄 Recent Changes
+
+### 2025-11-03 (Major Enhancement: Advanced Analytics & UI Fixes)
+
+**ADVANCED ANALYTICS FEATURE** - Complete implementation of 6 new analytics cards:
+1. **Market Position Card**: Shows user's percentile ranking, national average, city premium
+2. **Earning Projection Card**: 5-year salary projections with growth rates
+3. **Skill Impact Card**: Top 3-5 skills that would boost salary with demand levels
+4. **Location Comparison Card**: Compare salary across 3-4 cities with percentage differences
+5. **Industry Benchmark Card**: Compare across industries with growth trends (rising/stable/declining)
+6. **Time to Target Card**: Timeline to reach target salary with 3 scenarios (average/aggressive/with skills)
+
+**Analytics Integration**:
+- Updated Gemini prompt (`lib/gemini.ts`) to request all analytics data
+- Increased maxOutputTokens from 2048 to 4096 for comprehensive responses
+- Added analytics field transformation in API route (`app/api/analyze/route.ts`)
+- Snake_case to camelCase conversion for all analytics interfaces
+- Integrated 6 analytics cards into results dashboard with responsive grid layout
+- Analytics section appears conditionally when data is available
+
+**UI/UX IMPROVEMENTS**:
+- **Fixed Header Alignment**: Changed from flex to CSS Grid (3 columns) in results page header
+  - Back button (justify-self-start), Logo (center), Analyze Another (end)
+  - Responsive text: "Back to Home" → "Back" on mobile
+- **Loading Screen Redesign**: Complete overhaul with 4-stage system
+  - Stage 1: Analyzing Your Profile (Search icon)
+  - Stage 2: Comparing Market Data (BarChart3 icon)
+  - Stage 3: AI Processing (Bot icon)
+  - Stage 4: Finalizing Your Report (Sparkles icon)
+  - Features: Progress bar with shimmer, stage indicators, fun facts, trust badges
+  - Smooth transitions (6s per stage), terracotta gradient animations
+
+**COLOR SYSTEM OVERHAUL**:
+- **Critical Fix**: Replaced ALL hardcoded hex colors with CSS variable utility classes
+- Created comprehensive Tailwind CSS 4 color system in `globals.css`
+- Added `@theme inline` directive for custom colors (terra-*, sage-*, cream-*)
+- Updated files: page.tsx, analyze/page.tsx, results/[id]/page.tsx, results-dashboard.tsx, salary-chart.tsx
+- Pattern: `bg-[#B85042]` → `bg-terra-500`, `text-[#6b6b6b]` → `text-muted-foreground`
+- Only exception: Recharts requires hex values (defined as constants)
+
+**TYPESCRIPT UPDATES**:
+- Added 6 new interfaces to `types/index.ts`:
+  - MarketPosition, EarningProjection, SkillImpact
+  - LocationComparison, IndustryBenchmark, TimeToTarget
+- Updated AnalysisResult interface with optional analytics fields
+- Updated GeminiAnalysisResponse with snake_case analytics fields
+- Full type safety across analytics pipeline
+
+**FILE STRUCTURE ADDITIONS**:
+```
+frontend/src/components/analytics/
+├── market-position-card.tsx
+├── earning-projection-card.tsx
+├── skill-impact-card.tsx
+├── location-comparison-card.tsx
+├── industry-benchmark-card.tsx
+└── time-to-target-card.tsx
+```
+
+**COMPONENT PATTERNS**:
+- All analytics cards follow consistent structure:
+  - Header with colored icon (12x12 rounded box)
+  - Title + subtitle
+  - Main content area
+  - Optional footer with tips
+- Color themes: Sage (market/location), Terra (industry/projection), Amber (skills), Mixed (timeline)
+- Dark mode support throughout
+- Hover effects and transitions
+- Responsive design (grid: 1 col mobile, 2 col tablet, 3 col desktop)
 
 ### 2025-01-03 (Complete Redesign)
 - **MAJOR DESIGN OVERHAUL**: New terracotta/sage/cream color theme
