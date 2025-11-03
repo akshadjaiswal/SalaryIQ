@@ -24,7 +24,7 @@ interface ResultsDashboardProps {
 export function ResultsDashboard({ result }: ResultsDashboardProps) {
   const { verdict, difference, salaryRange, recommendations, reasoning, confidence, currency } = result;
 
-  // Verdict styling
+  // Verdict styling with new color theme
   const verdictConfig = {
     underpaid: {
       icon: TrendingDown,
@@ -37,19 +37,19 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
     },
     fair: {
       icon: Minus,
-      bg: "bg-green-50 dark:bg-green-950/20",
-      border: "border-green-200 dark:border-green-800",
-      text: "text-green-700 dark:text-green-400",
-      badge: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
+      bg: "bg-[#f4f6f5] dark:bg-[#4d5f56]/20",
+      border: "border-[#A7BEAE] dark:border-[#8fa69a]",
+      text: "text-[#4d5f56] dark:text-[#A7BEAE]",
+      badge: "bg-[#e8ebe9] dark:bg-[#4d5f56]/50 text-[#4d5f56] dark:text-[#A7BEAE]",
       title: "FAIRLY PAID",
       emoji: "✅",
     },
     overpaid: {
       icon: TrendingUp,
-      bg: "bg-purple-50 dark:bg-purple-950/20",
-      border: "border-purple-200 dark:border-purple-800",
-      text: "text-purple-700 dark:text-purple-400",
-      badge: "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300",
+      bg: "bg-amber-50 dark:bg-amber-950/20",
+      border: "border-amber-300 dark:border-amber-700",
+      text: "text-amber-700 dark:text-amber-400",
+      badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
       title: "ABOVE MARKET",
       emoji: "🎉",
     },

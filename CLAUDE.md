@@ -49,8 +49,10 @@ SalaryIQ/
 ├── frontend/                    # Next.js application
 │   ├── src/
 │   │   ├── app/                # Next.js App Router
-│   │   │   ├── page.tsx        # Homepage with form
+│   │   │   ├── page.tsx        # NEW: Landing page with "Get Started"
 │   │   │   ├── layout.tsx      # Root layout + metadata
+│   │   │   ├── analyze/        # NEW: Dedicated form page
+│   │   │   │   └── page.tsx    # Salary analysis form
 │   │   │   ├── results/[id]/   # Dynamic results pages
 │   │   │   │   ├── page.tsx    # Results display page
 │   │   │   │   └── metadata.ts # OG metadata generator
@@ -253,16 +255,36 @@ ELSE (no current salary):
 
 ## 🎨 Design System
 
-### Colors
+### Color Palette (Updated 2025-01-03)
+
+**Primary - Terracotta**
+- `#B85042` - Main brand color (buttons, accents, median highlights)
+- `#a5463a` - Hover state
+- `#fbe8e5` - Light backgrounds
+- `#5c2620` - Dark accents
+
+**Secondary - Sage Green**
+- `#A7BEAE` - Secondary accent, "fair" verdict
+- `#8fa69a` - Darker shade
+- `#e8ebe9` - Light backgrounds
+- `#4d5f56` - Text/dark accents
+
+**Neutral - Cream**
+- `#E7E8D1` - Main background color
+- `#c1c39f` - Borders and dividers
+- `#d4d6b8` - Subtle backgrounds
+- `#2d2d2d` - Primary text
+- `#6b6b6b` - Secondary text
+
+**Semantic Colors (Verdicts)**
 - **Underpaid**: Red (`#991b1b`, `#fee2e2`)
-- **Fair**: Green (`#166534`, `#dcfce7`)
-- **Overpaid**: Purple (`#6b21a8`, `#f3e8ff`)
-- **Primary**: Blue (`#3b82f6`)
-- **Neutral**: Slate (`#1e293b`, `#64748b`, `#f1f5f9`)
+- **Fair**: Sage Green (`#A7BEAE`, `#e8ebe9`)
+- **Overpaid**: Amber (`#b45309`, `#fef3c7`)
 
 ### Typography
 - **Font**: Geist Sans (primary), Geist Mono (code)
-- **Sizes**: Tailwind scale (text-sm to text-5xl)
+- **Sizes**: Tailwind scale (text-sm to text-7xl)
+- **Weight**: Regular (400), Medium (500), Semibold (600), Bold (700), Black (900)
 
 ---
 
@@ -356,19 +378,37 @@ CREATE INDEX idx_created_at ON analysis_cache(created_at);
 
 ## 🔄 Recent Changes
 
-### 2025-01-03 (Evening)
-- **CRITICAL UX FIX**: Fixed misleading percentage display for underpaid verdict
-  - Removed `Math.abs()` from difference display in results-dashboard.tsx
-  - Now correctly shows `-28.6%` for underpaid instead of `+28.6%`
-  - Updated share text to say "below market" for clarity
-  - The sign now properly indicates direction: negative = underpaid, positive = overpaid
+### 2025-01-03 (Complete Redesign)
+- **MAJOR DESIGN OVERHAUL**: New terracotta/sage/cream color theme
+  - Replaced blue/purple theme with warm, professional terracotta (#B85042)
+  - Added sage green (#A7BEAE) as secondary color
+  - Cream background (#E7E8D1) for minimal, clean aesthetic
+  - Updated all components with new color scheme
 
-### 2025-01-03 (Morning)
-- Fixed CSS gradient classes (`bg-linear-to-br` → `bg-gradient-to-br`)
-- Implemented dynamic OG image generation with real result data
-- Added multi-currency support to OG images
-- Created `/api/results/[id]/metadata` endpoint
-- Updated metadata.ts to fetch actual result data
+- **NEW LANDING PAGE**: Created dedicated homepage
+  - Beautiful hero section with "Get Started" CTA
+  - Feature showcase with 6 key benefits
+  - How it works section (3 steps)
+  - Form moved to `/analyze` route
+  - Improved user flow: Landing → Analyze → Results
+
+- **Color Updates Across All Components**:
+  - Results dashboard: Sage for "fair" verdict, amber for "overpaid"
+  - Salary chart: Terracotta bars for median, sage for percentiles
+  - OG images: New color theme for social sharing
+  - Results page: Cream background, updated navigation
+
+- **UX IMPROVEMENTS**:
+  - Fixed misleading percentage signs (-28.6% for underpaid vs +28.6%)
+  - Cleaner, more spacious layouts
+  - Better mobile responsiveness
+  - Modernized navigation and CTAs
+
+- **Technical Improvements**:
+  - Fixed CSS gradient classes
+  - Dynamic OG image generation with real data
+  - Multi-currency OG image support
+  - Created `/api/results/[id]/metadata` endpoint
 
 ### 2024-11-02
 - Fixed ESLint issues in salary-form.tsx and validations.ts

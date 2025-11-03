@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const maxSalary = searchParams.get("max") || "0";
     const currency = searchParams.get("currency") || "USD";
 
-    // Verdict styling
+    // Verdict styling with new color theme
     const verdictConfig: Record<
       string,
       { bg: string; text: string; title: string; emoji: string }
@@ -30,14 +30,14 @@ export async function GET(request: NextRequest) {
         emoji: "📉",
       },
       fair: {
-        bg: "#dcfce7",
-        text: "#166534",
+        bg: "#e8ebe9",  // Sage light
+        text: "#4d5f56",  // Sage dark
         title: "FAIRLY PAID",
         emoji: "✅",
       },
       overpaid: {
-        bg: "#f3e8ff",
-        text: "#6b21a8",
+        bg: "#fef3c7",  // Amber light
+        text: "#b45309",  // Amber dark
         title: "ABOVE MARKET",
         emoji: "🎉",
       },
