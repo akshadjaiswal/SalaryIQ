@@ -60,10 +60,13 @@ export function SalaryChart({
     },
   ];
 
-  // Color based on verdict - using new theme colors
+  // Color based on verdict - using theme colors (Recharts needs hex values)
+  const TERRA_500 = "#B85042"; // Terracotta primary
+  const SAGE_500 = "#A7BEAE"; // Sage primary
+
   const getBarColor = (index: number) => {
-    if (index === 2) return "#B85042"; // Terracotta for median
-    return "#A7BEAE"; // Sage for others
+    if (index === 2) return TERRA_500; // Terracotta for median
+    return SAGE_500; // Sage for others
   };
 
   return (
@@ -142,7 +145,7 @@ export function SalaryChart({
       {/* Legend */}
       <div className="flex flex-wrap gap-4 justify-center text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#B85042]" />
+          <div className="w-3 h-3 rounded-full bg-terra-500" />
           <span className="text-slate-600 dark:text-slate-400">
             Market Median
           </span>
@@ -159,21 +162,21 @@ export function SalaryChart({
 
       {/* Salary breakdown */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-        <div className="bg-[#e8ebe9] dark:bg-slate-800 p-4 rounded-lg">
-          <p className="text-xs text-[#6b6b6b] dark:text-slate-400">Minimum</p>
-          <p className="text-lg font-semibold text-[#2d2d2d] dark:text-slate-50">
+        <div className="bg-sage-100 dark:bg-slate-800 p-4 rounded-lg">
+          <p className="text-xs text-muted-foreground dark:text-slate-400">Minimum</p>
+          <p className="text-lg font-semibold text-foreground dark:text-slate-50">
             {formatCurrency(salaryRange.min, currency)}
           </p>
         </div>
-        <div className="bg-[#fbe8e5] dark:bg-[#5c2620]/30 p-4 rounded-lg">
-          <p className="text-xs text-[#B85042] dark:text-[#fbe8e5]">Median</p>
-          <p className="text-lg font-semibold text-[#5c2620] dark:text-[#fbe8e5]">
+        <div className="bg-terra-100 dark:bg-terra-900/30 p-4 rounded-lg">
+          <p className="text-xs text-terra-500 dark:text-terra-100">Median</p>
+          <p className="text-lg font-semibold text-terra-900 dark:text-terra-100">
             {formatCurrency(salaryRange.median, currency)}
           </p>
         </div>
-        <div className="bg-[#e8ebe9] dark:bg-slate-800 p-4 rounded-lg col-span-2 md:col-span-1">
-          <p className="text-xs text-[#6b6b6b] dark:text-slate-400">Maximum</p>
-          <p className="text-lg font-semibold text-[#2d2d2d] dark:text-slate-50">
+        <div className="bg-sage-100 dark:bg-slate-800 p-4 rounded-lg col-span-2 md:col-span-1">
+          <p className="text-xs text-muted-foreground dark:text-slate-400">Maximum</p>
+          <p className="text-lg font-semibold text-foreground dark:text-slate-50">
             {formatCurrency(salaryRange.max, currency)}
           </p>
         </div>

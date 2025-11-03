@@ -136,28 +136,30 @@ export default function ResultsPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#E7E8D1] dark:bg-[#1a1a1a]">
+    <div className="min-h-screen bg-cream-100 dark:bg-slate-950">
       {/* Header */}
-      <header className="border-b border-[#c1c39f] dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-cream-300 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="grid grid-cols-3 items-center gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2 text-[#6b6b6b] dark:text-slate-400 hover:text-[#B85042] dark:hover:text-slate-50 transition-colors"
+              className="flex items-center gap-2 text-muted-foreground dark:text-slate-400 hover:text-terra-500 dark:hover:text-slate-50 transition-colors justify-self-start"
             >
               <ArrowLeft className="h-5 w-5" />
-              <span className="font-medium">Back to Home</span>
+              <span className="font-medium hidden sm:inline">Back to Home</span>
+              <span className="font-medium sm:hidden">Back</span>
             </Link>
 
-            <h1 className="text-xl font-bold text-[#2d2d2d] dark:text-slate-50">
+            <h1 className="text-xl font-bold text-foreground dark:text-slate-50 justify-self-center">
               SalaryIQ
             </h1>
 
             <Link
               href="/analyze"
-              className="px-4 py-2 bg-[#B85042] hover:bg-[#a5463a] text-white rounded-lg font-medium transition-colors text-sm"
+              className="px-4 py-2 bg-terra-500 hover:bg-terra-600 text-white rounded-lg font-medium transition-colors text-sm justify-self-end truncate"
             >
-              Analyze Another
+              <span className="hidden sm:inline">Analyze Another</span>
+              <span className="sm:hidden">Analyze</span>
             </Link>
           </div>
         </div>
