@@ -356,7 +356,14 @@ CREATE INDEX idx_created_at ON analysis_cache(created_at);
 
 ## 🔄 Recent Changes
 
-### 2025-01-03
+### 2025-01-03 (Evening)
+- **CRITICAL UX FIX**: Fixed misleading percentage display for underpaid verdict
+  - Removed `Math.abs()` from difference display in results-dashboard.tsx
+  - Now correctly shows `-28.6%` for underpaid instead of `+28.6%`
+  - Updated share text to say "below market" for clarity
+  - The sign now properly indicates direction: negative = underpaid, positive = overpaid
+
+### 2025-01-03 (Morning)
 - Fixed CSS gradient classes (`bg-linear-to-br` → `bg-gradient-to-br`)
 - Implemented dynamic OG image generation with real result data
 - Added multi-currency support to OG images

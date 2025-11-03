@@ -77,7 +77,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
         </h1>
 
         <p className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-          {formatPercentage(Math.abs(difference))}
+          {formatPercentage(difference)}
         </p>
 
         <p className="text-slate-600 dark:text-slate-400">

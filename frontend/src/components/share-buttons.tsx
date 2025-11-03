@@ -29,7 +29,7 @@ export function ShareButtons({ result }: ShareButtonsProps) {
     }[result.verdict];
 
     const verdictText = {
-      underpaid: `I'm ${formatPercentage(Math.abs(result.difference))} UNDERPAID`,
+      underpaid: `I'm ${formatPercentage(result.difference)} below market (UNDERPAID)`,
       fair: "I'm getting paid fairly for my role",
       overpaid: `I'm ${formatPercentage(result.difference)} ABOVE market rate`,
     }[result.verdict];
