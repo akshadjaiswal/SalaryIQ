@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
     const difference = searchParams.get("difference") || "0";
     const minSalary = searchParams.get("min") || "0";
     const maxSalary = searchParams.get("max") || "0";
+    const currency = searchParams.get("currency") || "USD";
 
     // Verdict styling
     const verdictConfig: Record<
@@ -43,6 +44,26 @@ export async function GET(request: NextRequest) {
     };
 
     const config = verdictConfig[verdict] || verdictConfig.fair;
+
+    // Currency symbol mapping
+    const currencySymbols: Record<string, string> = {
+      USD: "$",
+      EUR: "€",
+      GBP: "£",
+      INR: "₹",
+      CAD: "$",
+      AUD: "$",
+    };
+
+    const currencySymbol = currencySymbols[currency] || "$";
+
+    // Format salary with currency
+    const formatSalary = (amount: number) => {
+      const formatted = amount.toLocaleString();
+      return currency === "INR"
+        ? `₹${formatted}`
+        : `${currencySymbol}${formatted}`;
+    };
 
     return new ImageResponse(
       (
@@ -141,8 +162,7 @@ export async function GET(request: NextRequest) {
               }}
             >
               <span>
-                ${parseInt(minSalary).toLocaleString()} - $
-                {parseInt(maxSalary).toLocaleString()}
+                {formatSalary(parseInt(minSalary))} - {formatSalary(parseInt(maxSalary))}
               </span>
             </div>
 

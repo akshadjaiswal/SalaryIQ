@@ -173,7 +173,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
       )}
 
       {/* Share Section */}
-      <div className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 text-center">
+      <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 text-center">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
           Share Your Results
         </h3>
