@@ -136,28 +136,30 @@ export default function ResultsPage({
   }
 
   return (
-    <div className="min-h-screen bg-linear-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-cream-100 dark:bg-slate-950">
       {/* Header */}
-      <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-cream-300 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="grid grid-cols-3 items-center gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
+              className="flex items-center gap-2 text-muted-foreground dark:text-slate-400 hover:text-terra-500 dark:hover:text-slate-50 transition-colors justify-self-start"
             >
               <ArrowLeft className="h-5 w-5" />
-              <span className="font-medium">Back to Home</span>
+              <span className="font-medium hidden sm:inline">Back to Home</span>
+              <span className="font-medium sm:hidden">Back</span>
             </Link>
 
-            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+            <h1 className="text-xl font-bold text-foreground dark:text-slate-50 justify-self-center">
               SalaryIQ
             </h1>
 
             <Link
-              href="/"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-sm"
+              href="/analyze"
+              className="px-4 py-2 bg-terra-500 hover:bg-terra-600 text-white rounded-lg font-medium transition-colors text-sm justify-self-end truncate"
             >
-              Analyze Another
+              <span className="hidden sm:inline">Analyze Another</span>
+              <span className="sm:hidden">Analyze</span>
             </Link>
           </div>
         </div>

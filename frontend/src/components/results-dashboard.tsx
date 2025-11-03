@@ -24,7 +24,7 @@ interface ResultsDashboardProps {
 export function ResultsDashboard({ result }: ResultsDashboardProps) {
   const { verdict, difference, salaryRange, recommendations, reasoning, confidence, currency } = result;
 
-  // Verdict styling
+  // Verdict styling with new color theme
   const verdictConfig = {
     underpaid: {
       icon: TrendingDown,
@@ -37,19 +37,19 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
     },
     fair: {
       icon: Minus,
-      bg: "bg-green-50 dark:bg-green-950/20",
-      border: "border-green-200 dark:border-green-800",
-      text: "text-green-700 dark:text-green-400",
-      badge: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
+      bg: "bg-sage-50 dark:bg-sage-900/20",
+      border: "border-sage-500 dark:border-sage-600",
+      text: "text-sage-900 dark:text-sage-500",
+      badge: "bg-sage-100 dark:bg-sage-900/50 text-sage-900 dark:text-sage-500",
       title: "FAIRLY PAID",
       emoji: "✅",
     },
     overpaid: {
       icon: TrendingUp,
-      bg: "bg-purple-50 dark:bg-purple-950/20",
-      border: "border-purple-200 dark:border-purple-800",
-      text: "text-purple-700 dark:text-purple-400",
-      badge: "bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300",
+      bg: "bg-amber-50 dark:bg-amber-950/20",
+      border: "border-amber-300 dark:border-amber-700",
+      text: "text-amber-700 dark:text-amber-400",
+      badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
       title: "ABOVE MARKET",
       emoji: "🎉",
     },
@@ -77,7 +77,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
         </h1>
 
         <p className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-          {formatPercentage(Math.abs(difference))}
+          {formatPercentage(difference)}
         </p>
 
         <p className="text-slate-600 dark:text-slate-400">
@@ -173,7 +173,7 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
       )}
 
       {/* Share Section */}
-      <div className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl p-8 text-center">
+      <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 text-center">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
           Share Your Results
         </h3>
