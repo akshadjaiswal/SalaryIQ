@@ -174,6 +174,29 @@ export default function ResultsPage({
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-20 py-8">
         <div className="container mx-auto px-4 text-center text-slate-600 dark:text-slate-400">
           <p>&copy; 2025 SalaryIQ. All rights reserved.</p>
+          <p className="text-sm mt-2">
+            Built by{" "}
+            <a
+              href="https://github.com/akshadjaiswal"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Akshad on GitHub"
+              className="inline-flex items-center gap-1 font-medium text-slate-700 dark:text-slate-200 hover:text-terra-500 dark:hover:text-terra-400 transition-colors"
+            >
+              <span aria-hidden="true">🐙</span>
+              <span>Akshad</span>
+            </a>
+          </p>
+          <p className="text-sm mt-1">
+            <a
+              href="https://github.com/akshadjaiswal/SalaryIQ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-slate-700 dark:text-slate-200 hover:text-terra-500 dark:hover:text-terra-400 transition-colors"
+            >
+              Open source contributions accepted
+            </a>
+          </p>
         </div>
       </footer>
     </div>

@@ -295,17 +295,20 @@ export function SalaryForm() {
             htmlFor="currentSalary"
             className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
           >
-            Current Salary (Optional)
+            Current Salary (Annual)
           </label>
           <input
             id="currentSalary"
             type="number"
             min="0"
-            placeholder="e.g., 85000"
+            placeholder="e.g., 85000 (annual)"
             inputMode="numeric"
             className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             {...register("currentSalary", { valueAsNumber: true })}
           />
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Enter your total yearly salary before taxes.
+          </p>
         </div>
 
         <div>
