@@ -9,8 +9,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 // Model IDs to try (in order of preference)
 const GEMINI_MODELS = [
   "gemini-2.0-flash-exp",      // Fastest, experimental (try first)
-  "gemini-1.5-pro",            // Stable, production-ready (fallback)
-  "gemini-1.5-flash",          // Alternative fallback
+  "gemini-2.5-flash",            // Stable, production-ready
 ] as const;
 
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
