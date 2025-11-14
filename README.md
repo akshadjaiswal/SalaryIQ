@@ -379,6 +379,9 @@ Include:
 
 ## Maintainers
 
--   **Akshad Jaiswal** [](https://github.com/akshadjaiswal)– Initial build and core features.
+**Akshad**
+
+- GitHub: [@akshadjaiswal](https://github.com/akshadjaiswal)
+- Twitter: [@akshad_999](https://twitter.com/akshad_999)
 
 Feedback via issues/PRs is appreciated! 🚀
